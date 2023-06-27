@@ -1,14 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import Button from './components/atoms/Button.vue';
+import Modal from './components/organisms/Modal.vue';
+import HeaderModal from './components/molecules/HeaderModal.vue';
 // estado para qual modal mostrar
 
 const registeredModals = ['none', 'modal-1', 'modal-2'];
-
 const activeModal = ref({activeModal: registeredModals[0]});
+const showModal = ref(false)
 
 function modalHadler(target) {
-  alert('clicked')
+  // alert('clicked')
+  showModal.value = true;
 }
 
 </script>
@@ -36,6 +39,21 @@ function modalHadler(target) {
       </div>
     </section>
   </main>
+
+  <Teleport to="body">
+    <!-- use the modal component, pass in the prop -->
+    <Modal :show="showModal" @close="showModal = false">
+      <template #header>
+        <!-- <h3>custom header</h3> -->
+        <HeaderModal title="Custom New Header!" sub-title="wow"></HeaderModal>
+      </template>
+      
+      <template #body>
+        div
+      </template>
+    </Modal>
+  </Teleport>
+
 </template>
 
 <style scoped>
