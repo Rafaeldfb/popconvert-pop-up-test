@@ -3,6 +3,8 @@
     icon: String,
     size: String,
   })
+  let viewBoxConf = `${1.5} ${1.8} ${(props.size*115/100)} ${(props.size*115/100)}`
+  // viewBox="0 0 20 20" default
 </script>
 
 <template>
@@ -11,13 +13,13 @@
       <svg 
         :width="size+'px'"
         :height="size+'px'"
-        viewBox="2 0 20 20" 
+        :viewBox="viewBoxConf" 
         xmlns="http://www.w3.org/2000/svg" 
       >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier"> 
-          <g id="Menu / Close_MD"> 
+        <g stroke-width="0"></g>
+        <g stroke-linecap="round" stroke-linejoin="round"></g>
+        <g> 
+          <g> 
             <path 
               id="Vector" 
               d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" 
@@ -33,18 +35,26 @@
 </template>
 
 <style scoped>
-  .button__wrapper button {
-    padding: 0.2em 0.4em;
+  button {
+    padding: 0;
+    padding-inline: 0;
+    padding-block: 0;
+    display: inline-flex;
+    align-content: center;
+    text-align: center;
+    aspect-ratio: 1 / 1;
+    width: v-bind('size');
+    height: v-bind('size');
+  }
+  button {
     background-color: var(--btn__bg-color);
     border-color: var(--btn__border-color);
     border-style: solid;
     border-width: 2px;
     border-radius: 50%;
   }
-  .button__wrapper button:hover {
-    background-color: var(--btn__hover-bg-color);
+  button:hover {
     border-color: var(--btn__hover-border-color);
-  
   }
   button svg {
     stroke: var(--btn__text-color);
