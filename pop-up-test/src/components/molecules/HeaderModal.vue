@@ -1,11 +1,8 @@
 <script setup>
-import CloseButton from '../atoms/CloseButton.vue';
-
 const props = defineProps({
   title: String,
   subTitle: String,
 }) 
-
 </script>
 
 <template>
@@ -20,16 +17,18 @@ const props = defineProps({
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  text-align: left;
-  justify-content: left;
 }
 .modal__header .header__title {
+  width: 100%;
+  text-align: left;
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: -0.5rem;
 }
 
 .modal__header .header__subTitle {
+  width: 100%;
+  text-align: left;
   font-size: 0.8rem;
   font-weight: 400;
   margin-bottom: 0.5rem;

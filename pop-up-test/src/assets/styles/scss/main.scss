@@ -11,7 +11,17 @@
   --btn__hover-text-color: hsl(237, 100%, 85%);
 
   --btn__border-color: var(--btn__bg-color);
-  --btn__hover-border-color: hsl(237, 100%, 70%);;
+  --btn__hover-border-color: hsl(237, 100%, 70%);
+
+  /* responsivity var */
+  --modal__min-width: 300px;
+  --modal__max-width: 768px;
+  --modal__default-width: 60vw;
+
+
+  @media (max-width: 768px) {
+  --modal__default-width: 100vw;
+  }
 
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -27,6 +37,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  box-sizing: border-box;
+
 }
 
 
@@ -96,22 +109,30 @@ button:hover {
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: var(--btn__hover-border-color) inset 1px;
 }
+
+input, select {
+  border-radius: 0.25rem;
+}
+
+:focus-visible, :focus-visible::-moz-focus-inner {
+  outline: var(--btn__hover-border-color) inset 1px !important;
+  outline-offset: 0;
+  box-shadow: 0 0 2px 1px var(--btn__hover-border-color);
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {
     --text__color: #213547;
     --bg__color: hsl(0, 0%, 95%);
     --bg__color-alpha: rgba(143, 143, 143, 0.5);
+
+    --btn__bg-color: hsl(237, 15%, 80%);
+    --btn__hover-text-color: hsl(237, 100%, 60%);
   }
   a:hover {
     color: hsl(237, 100%, 73%);
-  }
-  button {
-    --btn__bg-color: hsl(237, 15%, 80%);
-    &:hover {
-      --btn__hover-text-color: hsl(237, 100%, 60%);
-    }
   }
 }

@@ -2,25 +2,20 @@
 import Button from '../atoms/Button.vue';
 import CloseButton from '../atoms/CloseButton.vue';
 
-const props = defineProps({
-  show: Boolean,
-  width: Number,
-  height: Number,
-})
+const props = defineProps({ show: Boolean });
+
 </script>
 
 <template>
   <Transition name="modal">
     <div v-if="show" class="modal-mask">
       <div class="modal-container">
-        <div class="modal-header">
-          <div class="modal__header-slot-wrapper">
-            <slot name="header">default header</slot>
-          </div>
-
-          <div class="modal__header-close">
+        <div class="modal__closeBtn">
             <CloseButton size="18" icon="/close.svg" @click="$emit('close')"></CloseButton>
           </div>
+
+        <div class="modal-header">
+          <slot name="header">default header</slot>
         </div>
 
         <div class="modal-body">
@@ -56,36 +51,21 @@ const props = defineProps({
 }
 
 .modal-container {
-  width: 300px;
+  position: relative;
+  /* width: clamp(300px, 60vw, 768px); */
+  width: clamp(var(--modal__min-width), var(--modal__default-width), var(--modal__default-width));
   margin: auto;
-  padding: 20px 30px;
+  padding: 1rem 1.5rem;
   background-color: var(--bg__color);
-  border-radius: 2px;
+  border-radius: 1rem;
   box-shadow: 0 2px 8px rgba(255, 255, 255, 0.33);
   transition: all 0.3s ease;
 }
 
-.modal__header {
-  display: flex;
-  align-items: center;
-}
-.modal__header-slot-wrapper {
-  flex-grow: 1;
-  margin-bottom: 1rem;
-}
-.modal__header .modal-header-close {
-  flex-shrink: 1;
-  margin-bottom: auto;
-  margin-top: 0.1rem;
-}
-
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-
-.modal-body {
-  margin: 20px 0;
+.modal__closeBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
 
 .modal-default-button {

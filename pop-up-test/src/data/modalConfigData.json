@@ -1,0 +1,26 @@
+{
+  "modalConfig": {
+    "modalType": "both",
+    "modalType_help": "- tipo de conteúdo a ser exibido no corpo da modal: 'video' ou 'game'",
+
+    "formOptions": [
+      "name", 
+      "email", 
+      "phone", 
+      "gender"
+    ],
+    "formOptions__help": "- o número de campos no formulário (de 1 a 4 campos)",
+
+    "formNeedsPermission": "true",
+    "formNeedsPermission_help": "- a presença ou não de um checkbox sobre consentimento para coleta de dados",
+
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "videoUrl_help": "- URL do vídeo",
+
+    "modalTitle": "Título da modal",
+    "modalTitle_help": "- título",
+
+    "modalSubTitle": "Um subtítulo interessante...",
+    "modalSubTitle_help": "- subtítulo"
+  }
+}
