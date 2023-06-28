@@ -1,19 +1,41 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import { modalConfig } from './data/modalConfigData.json'
+
 import Button from './components/atoms/Button.vue';
 import Modal from './components/organisms/Modal.vue';
 import HeaderModal from './components/molecules/HeaderModal.vue';
+import GameBody from './components/molecules/GameBody.vue';
+import VideoBodyVue from './components/molecules/VideoBody.vue';
+import FormModal from './components/molecules/FormModal.vue';
+
 // estado para qual modal mostrar
+const registeredModals = ['both', 'game', 'video'];
 
-const registeredModals = ['none', 'modal-1', 'modal-2'];
-const activeModal = ref({activeModal: registeredModals[0]});
+console.log(modalConfig);
+
+const activeModal = reactive({
+  modalConfig: modalConfig,
+});
+
 const showModal = ref(false)
+const originalModalType = activeModal.modalConfig.modalType;
 
-function modalHadler(target) {
-  // alert('clicked')
+function modalHadler(type) {
+  if (!registeredModals.includes(type)) return false;
+  activeModal.modalConfig.modalType = type;
   showModal.value = true;
 }
 
+function modalFormSubmitHandler(payload) {
+  console.log('App: ')
+  if (!payload?.username || !payload?.email) return false;
+  
+  const receivedData = payload;
+
+  console.log('File sys received: ', receivedData);
+  return true;
+}
 </script>
 
 <template>
@@ -33,23 +55,50 @@ function modalHadler(target) {
       </p>
       
       <div id="buttonsContainer">
-        <Button text="Modal 1" @click="modalHadler(registeredModals[1])" ></Button>
+        <Button 
+          v-if="['both', 'game'].includes(originalModalType)"
+          text="Modal Game" 
+          @click="modalHadler(registeredModals[1])"
+        ></Button>
 
-        <Button text="modal 2" @click="modalHadler(registeredModals[2])" ></Button>
+        <Button 
+          v-if="['both', 'video'].includes(originalModalType)"
+          text="Modal Vídeo" 
+          @click="modalHadler(registeredModals[2])"
+        ></Button>
       </div>
     </section>
   </main>
 
   <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
     <Modal :show="showModal" @close="showModal = false">
       <template #header>
-        <!-- <h3>custom header</h3> -->
-        <HeaderModal title="Custom New Header!" sub-title="wow"></HeaderModal>
+        <HeaderModal 
+          :title="activeModal.modalConfig.modalTitle" 
+          :sub-title="activeModal.modalConfig.modalSubTitle"
+        >
+        </HeaderModal>
       </template>
       
       <template #body>
-        div
+        <GameBody 
+          v-if="activeModal.modalConfig.modalType === 'game'" 
+          :title="activeModal.modalConfig.modalTitle" 
+          :sub-title="activeModal.modalConfig.modalSubTitle"
+        ></GameBody>
+
+        <VideoBodyVue 
+          v-if="activeModal.modalConfig.modalType === 'video'" 
+          :title="activeModal.modalConfig.modalTitle" 
+          :sub-title="activeModal.modalConfig.modalSubTitle"
+          :video-src="activeModal.modalConfig.videoUrl"
+          :video-title="activeModal.modalConfig.modalTitle"
+          :video-autoplay="true"
+          ></VideoBodyVue>
+      </template>
+
+      <template #footer>
+        <FormModal @modalFormSubmit="modalFormSubmitHandler" @close="showModal = false"></FormModal>
       </template>
     </Modal>
   </Teleport>
