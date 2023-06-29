@@ -6,6 +6,8 @@ Utilizei um projeto em branco desenvolvido, desenvolvido totalmente por mim, ape
 
 ## Sobre:
 Consiste em uma página 'lorem ipsum' com botão(ões) que dispara(m) modal(is), simulando pop-ups.
+A página  as modais possuem boa responsividade, animaçõe, reatividade e ótimo desempenho.
+Há claro pontos que podem ser melhorados, mas esta é uma boa versão para uma primeira entrega / teste.
 
 ## Configurações:
 o arquivo 'pop-up-test/src/data/modalConfigData.json' possui todas as configurações que alteram o conteúdo do corpo e do formulário da modal.
