@@ -1,26 +1,28 @@
 <script setup>
+import { inject } from 'vue';
 import Button from '../atoms/Button.vue';
+import CheckPermissionVue from '../atoms/CheckPermission.vue';
 
 const props = defineProps({ show: Boolean });
 
+const formConfigInjected = inject('formOptions');
+
 const emit = defineEmits({
-  modalFormSubmit: ({username, email, phone, gender}) => {
-    if (!username || !email || !phone) return false;
-    return true;
+  modalFormSubmit: (payload) => {
+    if (!Object.values(payload).includes(null)) return true;
+    return false;
   }
 })
 
 function submitModalForm(event) {
   const eTarget = event.target;
+  const payload = {};
 
-  const payload = {
-    username: eTarget.elements.username?.value,
-    email: eTarget.elements.email?.value,
-    phone: eTarget.elements.phone?.value,
-    gender: eTarget.elements.gender?.value,
-  }
+  formConfigInjected.formFields.forEach(function(field) {
+    return payload[field] = eTarget.elements[field]?.value;
+  })
 
-  console.log(payload);
+  // console.log('formulário enviado...', payload);
   try { 
     emit('modalFormSubmit', payload);
   } catch (err) {
@@ -38,22 +40,22 @@ function submitModalForm(event) {
 <template>
   <div id="modal__form" @submit.prevent="submitModalForm">
     <form action="#">
-      <div class="form-group">
+      <div v-if="formConfigInjected.formFields.includes('username')" class="form-group">
         <label for="#usermane">Nome: </label>
         <input type="text" name="username" id="username" maxlength="64" minlength="4" required>
       </div>
       
-      <div class="form-group">
+      <div v-if="formConfigInjected.formFields.includes('email')" class="form-group">
         <label for="#email">E-mail: </label>
         <input type="email" name="email" id="email" maxlength="64" minlength="8" required>
       </div>
 
-      <div class="form-group">
+      <div v-if="formConfigInjected.formFields.includes('phone')" class="form-group">
         <label for="#phone">Telefone: </label>
         <input type="phone" name="phone" id="phone" maxlength="13" minlength="8" required>
       </div>
 
-      <div class="form-group">
+      <div v-if="formConfigInjected.formFields.includes('gender')" class="form-group">
         <label for="#gender">Genêro: </label>
 
         <select id="gender">
@@ -65,7 +67,14 @@ function submitModalForm(event) {
       </div>
 
       <div id="submitBtnWrapper" class="form-group">
-        <Button role="submit" text="Enviar" fontSize="0.8rem"></Button>
+        <CheckPermissionVue 
+        v-if="formConfigInjected.formPermission"
+        id="permission"
+        labelText="Você permite o uso de seus dados?" 
+        size="sm"
+        ></CheckPermissionVue>
+
+        <Button id="submitBtn" role="submit" text="Enviar" fontSize="0.8rem"></Button>
       </div>
     </form>
   </div>
@@ -106,8 +115,13 @@ function submitModalForm(event) {
 
   #submitBtnWrapper{
     width: 100%;
+    display: flex;
   }
-  #submitBtnWrapper > * {
+  #submitBtnWrapper #permission {
+    margin-right: auto;
+    text-align: left;
+  }
+  #submitBtnWrapper #submitBtn {
     margin-left: auto;
     text-align: right;
   }

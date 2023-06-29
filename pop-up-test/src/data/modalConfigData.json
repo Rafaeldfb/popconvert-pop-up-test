@@ -4,7 +4,7 @@
     "modalType_help": "- tipo de conteúdo a ser exibido no corpo da modal: 'video' ou 'game'",
 
     "formOptions": [
-      "name", 
+      "username", 
       "email", 
       "phone", 
       "gender"

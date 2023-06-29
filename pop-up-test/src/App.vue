@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, provide } from 'vue';
 import { modalConfig } from './data/modalConfigData.json'
 
 import Button from './components/atoms/Button.vue';
@@ -12,11 +12,16 @@ import FormModal from './components/molecules/FormModal.vue';
 // estado para qual modal mostrar
 const registeredModals = ['both', 'game', 'video'];
 
-console.log(modalConfig);
-
+// Load das configurações gerais no estado.
 const activeModal = reactive({
   modalConfig: modalConfig,
 });
+
+// Opções de Formulária sendo passadas diretamente para o componente de formulário 
+const formConfigProvider = provide('formOptions', {
+  formFields: activeModal.modalConfig.formOptions,
+  formPermission: activeModal.modalConfig.formNeedsPermission,
+})
 
 const showModal = ref(false)
 const originalModalType = activeModal.modalConfig.modalType;
@@ -28,9 +33,9 @@ function modalHadler(type) {
 }
 
 function modalFormSubmitHandler(payload) {
-  console.log('App: ')
-  if (!payload?.username || !payload?.email) return false;
-  
+  let payloadValid = activeModal.modalConfig.formOptions.every((key => payload.hasOwnProperty(key)))
+  if (!payloadValid) return false;
+
   const receivedData = payload;
 
   console.log('File sys received: ', receivedData);
